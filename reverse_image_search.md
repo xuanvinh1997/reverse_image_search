@@ -159,42 +159,6 @@ def get_image(path):
 
 
 
-```python
-### create database (peewee -  https://github.com/coleifer/peewee)
-## initialize db
-db = SqliteDatabase('./images.db')
-
-
-class VectorField(BlobField):
-    db_field = 'vector'
-### details - https://github.com/coleifer/peewee/blob/master/peewee.py
-    def db_value(self, value):
-        out = io.BytesIO()
-        np.save(out, value)
-        out.seek(0)
-        return out.read()  # zlib, bz2
-
-    def python_value(self, value):
-        out = io.BytesIO(value)
-        out.seek(0)
-        
-        return np.load(out)
-
-
-class BaseModel(peewee.Model):
-    class Meta:
-        database = db
-
-class ObjectFeature(BaseModel):
-    id = BigIntegerField(primary_key=True, unique=True)
-    classify = TextField()
-    link = TextField()
-    vector = VectorField()
-    
-
-db.create_tables([ObjectFeature])
-```
-
 
 ```python
 ### download data if not exits
